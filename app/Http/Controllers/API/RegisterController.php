@@ -70,12 +70,20 @@ class RegisterController extends ApiController
             return $this->errorAuth(2, "Email atau Password Salah", (object) array());
         }
         $user =   Auth::guard('member')->user();
+        $params = $user->id;    
+        $order_code = DB::table('transactions')
+        ->select('user_order_code')
+        ->where('id_user', $params)
+        ->where('order_status', 1)
+        ->first();
+        
         $success['token'] = $user->createToken($user->email)->accessToken;
         $success['name']  = $user->nama;
         $success['email']  = $user->email;
         $success['id']  = $user->id;
- 
+        $success['order_code']  = $order_code->user_order_code;
         return $this->sendResponse(0, "Login Berhasil", $success);
+       
     }
 
     public function validationMessage($validation)

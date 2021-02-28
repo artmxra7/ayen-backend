@@ -22,7 +22,7 @@ class DashboardController extends Controller
     {
         $income = Transaction::where('transaction_status','SUKSES')->sum('transaction_total');
         $sales = Transaction::where('transaction_status','SUKSES')->count('transaction_status');
-        $items = Transaction::orderBy('id', 'Desc')->take(5)->get();
+        $items = Transaction::where('order_status', '>=', 2)->orderBy('id', 'Desc')->take(5)->get();
         $pie = [
             'pending' => Transaction::where('transaction_status', 'PENDING')->count(),
             'gagal' => Transaction::where('transaction_status', 'GAGAL')->count(),
