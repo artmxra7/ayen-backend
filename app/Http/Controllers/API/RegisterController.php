@@ -76,12 +76,18 @@ class RegisterController extends ApiController
         ->where('id_user', $params)
         ->where('order_status', 1)
         ->first();
+
+        $success['order_code'] = '';
+
+        if ($order_code != null){            
+        $success['order_code']  = $order_code->user_order_code;
+        }
+       
         
         $success['token'] = $user->createToken($user->email)->accessToken;
         $success['name']  = $user->nama;
         $success['email']  = $user->email;
         $success['id']  = $user->id;
-        $success['order_code']  = $order_code->user_order_code;
         return $this->sendResponse(0, "Login Berhasil", $success);
        
     }
